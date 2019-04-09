@@ -1,74 +1,49 @@
 <?php
-namespace Deployer;
+	/**
+	 * GIT DEPLOYMENT SCRIPT
+	 *
+	 * Used for automatically deploying websites via github or bitbucket, more deets here:
+	 * https://gist.github.com/riodw/71f6e2244534deae652962b32b7454e2
+	 * How To Use:
+	 * https://medium.com/riow/deploy-to-production-server-with-git-using-php-ab69b13f78ad
+	 */
+	// The commands
+	$commands = array(
+		'echo $PWD',
+		'whoami',
+		'git reset --hard HEAD',
+		'git pull',
+		'git status',
+		'git submodule sync',
+		'git submodule update',
+		'git submodule status',
+	);
+	// Run the commands for output
+	$output = '';
+	foreach($commands AS $command){
+		// Run it
+		$tmp = shell_exec($command);
+		// Output
+		$output .= "<span style=\"color: #6BE234;\">\$</span> <span style=\"color: #729FCF;\">{$command}\n</span>";
+		$output .= htmlentities(trim($tmp)) . "\n";
+	}
+	// Make it pretty for manual user access (and why not?)
+?>
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>GIT DEPLOYMENT SCRIPT</title>
+</head>
+<body style="background-color: #000000; color: #FFFFFF; font-weight: bold; padding: 0 10px;">
+<pre>
+ ____________________________
+|                            |
+| Git Deployment Script v0.1 |
+|      github.com/riodw 2017 |
+|____________________________|
 
-require 'recipe/common.php';
-
-// Project name
-set('application', 'my_project');
-
-// Project repository
-set('repository', 'git@github.com:ascalmon/php_deploy.git');
-add('shared_files', []);
-add('shared_dirs', ['www']);
-// [Optional] Allocate tty for git clone. Default value is false.
-set('git_tty', true);
-
-// Shared files/dirs between deploys
-//set('shared_files', []);
-//set('shared_dirs', []);
-
-// Writable dirs by web server
-set('writable_dirs', []);
-
-
-// Hosts
-
-//host('project.com')
-    //->set('deploy_path', '~/{{application}}');
-host('ftp.dionimports.com')
-    ->user('dionimports.com')
-    ->port(9922)
-    //->configFile('~/.ssh/config')
-    ->identityFile('~/.ssh/id_rsa')
-    ->forwardAgent(true)
-    ->multiplexing(true)
-    ->addSshOption('UserKnownHostsFile', '/dev/null')
-    ->addSshOption('StrictHostKeyChecking', 'no')
-    ->stage('stage')
-    ->set('deploy_path', '/var/www/html');
-
-// Tasks
-
-desc('Deploy your project');
-task('deploy', [
-    'deploy:info',
-    'deploy:prepare',
-    'deploy:lock',
-    'deploy:release',
-    'deploy:update_code',
-    'deploy:shared',
-    'deploy:writable',
-    'deploy:vendors',
-    'deploy:clear_paths',
-    'deploy:symlink',
-    'deploy:unlock',
-    'cleanup',
-    'success'
-]);
-
-task('test', function () {
-    writeln('Hello world');
-});
-
-task('lsla', function () {
-    $result = run('ls -la');
-    writeln("Current dir: $result");
-});
-
-task('rmdir', function () {
-    $result = run('rm -rf /var/www/html');
-    writeln("Current dir: $result");
-});
-
-// [Optional] If deploy fails automatically unlock.
-after('deploy:failed', 'deploy:unlock');
+<?php echo $output; ?>
+</pre>
+</body>
+</html>
