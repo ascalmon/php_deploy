@@ -1,4 +1,6 @@
 <?php
+  require_once '../vendor/autoload.php';
+
   echo 'PHP Deploy test';
 
  ?>

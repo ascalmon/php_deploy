@@ -1,0 +1,21 @@
+{
+  "name": "antoniocalmon/php_deploy",
+  "description": "PHP deploy test",
+  "require": {
+    "php": ">=7.0"
+  },
+  "require-dev": {
+    "deployer/deployer": "^6.4.3"
+  },
+  "autoload": {
+    "psr-4": {
+    }
+  },
+  "license": "ASC",
+  "authors": [
+    {
+      "name": "ascalmon",
+      "email": "ascalmon@gmail.com"
+    }
+  ]
+}
